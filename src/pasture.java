@@ -45,22 +45,22 @@ public class pasture {
 			for(int second = first+1; second < numCows; second++) {
 				CompressedCow left = compressedCows[first];
 				CompressedCow right = compressedCows[second];
-				CompressedCow top, bottom;
+				CompressedCow higher, lower;
 
 				if(left.r < right.r) {
-					top = left;
-					bottom = right;
+					higher = left;
+					lower = right;
 				}
 				else {
-					top = right;
-					bottom = left;
+					higher = right;
+					lower = left;
 				}
 
 
 				int tops;
-				tops = query(expandedSums, 0, left.c, top.r, right.c);
+				tops = query(expandedSums, 0, left.c, higher.r, right.c);
 				int bottoms;
-				bottoms = query(expandedSums, bottom.r, left.c, numCows-1, right.c);
+				bottoms = query(expandedSums, lower.r, left.c, numCows-1, right.c);
 				total += ((long) tops * bottoms);
 			}
 		}
