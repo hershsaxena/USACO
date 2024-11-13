@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class subarraySums2 {
+public class SubarraySums2 {
     public static void main(String[] args) throws IOException {
         Kattio io = new Kattio();
         int arraySize = io.nextInt();

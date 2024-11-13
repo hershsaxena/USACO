@@ -3,7 +3,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.StringTokenizer;
 
-public class pairup {
+public class Pairup {
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new FileReader("pairup.in"));
 		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("pairup.out")));
