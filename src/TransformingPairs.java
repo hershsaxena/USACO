@@ -8,7 +8,6 @@ public class TransformingPairs {
         StringTokenizer st = new StringTokenizer(br.readLine());
         int testCases = Integer.parseInt(st.nextToken());
 
-        outer:
         for (int t = 0; t < testCases; t++) {
             st = new StringTokenizer(br.readLine());
             long goalOne =  Long.parseLong(st.nextToken());
