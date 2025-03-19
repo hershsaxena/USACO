@@ -8,56 +8,73 @@ public class GregAndArray {
         StringTokenizer st = new StringTokenizer(br.readLine());
 
         int n = Integer.parseInt(st.nextToken());
-        int m = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(st.nextToken());
-
+        int numOperations = Integer.parseInt(st.nextToken());
+        int queries = Integer.parseInt(st.nextToken());
+        long[] a = new long[n];
+        int[] operationsDiff = new int[numOperations + 2];
+        Operation[] operations = new Operation[numOperations];
         st = new StringTokenizer(br.readLine());
-        int[] a = new int[n + 2];
-        for (int i = 1; i < n + 1; i++) { // Create Difference Array
-            a[i] = Integer.parseInt(st.nextToken());
-        }
-        for (int i = 1; i < n + 2; i++) { // Create Difference Array
-            a[i] -= a[i - 1];
+
+        for (int i = 0; i < n; i++) {
+            a[i] = Long.parseLong(st.nextToken());
         }
 
-        int[][] operations = new int[m][3]; // Create array listing operations
-        for (int i = 0; i < m; i++) {
+        for (int i = 0; i < numOperations; i++) {
             st = new StringTokenizer(br.readLine());
-            operations[i][0] = Integer.parseInt(st.nextToken());
-            operations[i][1] = Integer.parseInt(st.nextToken());
-            operations[i][2] = Integer.parseInt(st.nextToken());
+            operations[i] = new Operation(Integer.parseInt(st.nextToken()) - 1, Integer.parseInt(st.nextToken()) - 1, Integer.parseInt(st.nextToken()));
         }
 
-        int[] operationsApplied = new int[n + 2]; // Create difference array showing how many times each operation is applied
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < queries; i++) {
             st = new StringTokenizer(br.readLine());
-            operationsApplied[Integer.parseInt(st.nextToken())]++;
-            operationsApplied[Integer.parseInt(st.nextToken()) + 1]--;
-        }
-        createFromDiff(operationsApplied); // Use prefix sums to turn the difference array into the actual array of operations applied
-
-        for (int i = 1; i < operationsApplied.length - 2; i++) {
-            int cur = operationsApplied[i];
-            a[operations[i][0]] += operations[i][2] * cur;
-            a[operations[i][1] + 1] += operations[i][2] * cur;
+            operationsDiff[Integer.parseInt(st.nextToken())]++;
+            operationsDiff[Integer.parseInt(st.nextToken()) + 1]--;
         }
 
-        createFromDiff(a);
+        int[] operationsApplied = new int[numOperations];
+        operationsApplied[0] = operationsDiff[1];
 
-        for (int i = 0; i < a.length - 1; i++) {
-            int cur = a[i];
-            pw.println(cur + " ");
+        for (int i = 2; i < numOperations + 1; i++) {
+            operationsApplied[i - 1] = operationsApplied[i - 2] + operationsDiff[i];
         }
-        pw.println(a[a.length - 1]);
 
+        long[] aDiff = new long[n + 2];
+        for (int i = 0; i < numOperations; i++) {
+            Operation o = operations[i];
+            int timesApplied = operationsApplied[i];
+
+            aDiff[o.l + 1] += (long) o.val * timesApplied;
+            aDiff[o.r + 2] -= (long) o.val * timesApplied;
+        }
+
+        long[] res = new long[n];
+        res[0] = aDiff[1];
+        for (int i = 2; i < n + 1; i++) {
+            res[i - 1] = res[i - 2] + aDiff[i];
+        }
+
+        for (int i = 0; i < n; i++) {
+            res[i] += a[i];
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            sb.append(res[i]);
+            if (i != n - 1) sb.append(" ");
+        }
+
+        pw.println(sb.toString());
         pw.close();
     }
 
-    static void createFromDiff(int[] initial) {
-        for(int i = 1; i < initial.length; i++) {
-            initial[i] += initial[i - 1];
+    static class Operation {
+        int l;
+        int r;
+        int val;
+
+        public Operation(int l, int r, int val) {
+            this.l = l;
+            this.r = r;
+            this.val = val;
         }
     }
 }
-
-
